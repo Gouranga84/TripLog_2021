@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
-namespace TripLog
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+namespace TripLog.Views
 {
-    public partial class MainPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class NewEntryPage : ContentPage
     {
-        public MainPage()
+        public NewEntryPage()
         {
             InitializeComponent();
         }
