@@ -7,8 +7,8 @@
         <ToolbarItem Text="New" Clicked="New_Clicked" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <CollectionView x:Name="trips"
-                        SelectionMode="Single">
+        
+        <CollectionView x:Name="trips" SelectionMode="Single" SelectionChanged="Trips_SelectionChanged">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10">
