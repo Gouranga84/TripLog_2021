@@ -8,7 +8,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         
-        <CollectionView x:Name="trips" SelectionMode="Single" SelectionChanged="Trips_SelectionChanged">
+        <CollectionView x:Name="trips" SelectionMode="Single" SelectionChanged="Trips_SelectionChanged" ItemsSource="{Binding LogEntries}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10">
