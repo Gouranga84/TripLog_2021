@@ -85,6 +85,8 @@ namespace TripLog.ViewModels
             Date = DateTime.Today;
             Rating = 1;
         }
+
+        public override void Init() { }
         #endregion
 
         #region Button Save

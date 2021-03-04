@@ -2,7 +2,7 @@
 
 namespace TripLog.ViewModels
 {
-    public class DetailViewModel : BaseViewModel
+    public class DetailViewModel : BaseViewModel<TripLogEntry>
     {
         TripLogEntry _entry;
         public TripLogEntry Entry
@@ -15,9 +15,11 @@ namespace TripLog.ViewModels
             }
         }
 
-        public DetailViewModel(TripLogEntry entry)
+        public DetailViewModel() { }
+
+        public override void Init(TripLogEntry parameter)
         {
-            Entry = entry;
+            Entry = parameter;
         }
     }
 }
