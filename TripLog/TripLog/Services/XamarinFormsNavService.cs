@@ -45,5 +45,78 @@ namespace TripLog.Services
             }
         }
         #endregion
+
+        #region NavigateTo<TVM>
+        /// <summary>
+        /// Lädt mit diesem Task die MainPage, da als Grundlage das <see cref="BaseViewModel"/> ohne überladung dient
+        /// </summary>
+        /// <typeparam name="TVM"></typeparam>
+        /// <returns></returns>
+        public async Task NavigateTo<TVM>() where TVM : BaseViewModel
+        {
+            await NavigateToView(typeof(TVM));
+
+            if (XamarinFormsNav.NavigationStack.Last().BindingContext is BaseViewModel)
+            {
+                ((BaseViewModel)XamarinFormsNav.NavigationStack.Last().BindingContext).Init();
+            }
+        }
+        #endregion
+
+        #region NavigateTo<TVM>
+        /// <summary>
+        /// Lädt an der Stelle "wahrscheinlich" das DetailViewModel da eine Parameterübergabe stattfindet, in dem Fall
+        /// die Selection der MainPage
+        /// </summary>
+        /// <typeparam name="TVM"></typeparam>
+        /// <typeparam name="TParameter"></typeparam>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public async Task NavigateTo<TVM, TParameter>(TParameter parameter) where TVM : BaseViewModel
+        {
+            await NavigateToView(typeof(TVM));
+
+            if (XamarinFormsNav.NavigationStack.Last().BindingContext is BaseViewModel<TParameter>)
+            {
+                ((BaseViewModel<TParameter>)XamarinFormsNav.NavigationStack.Last().BindingContext).Init(parameter);
+            }
+        }
+        #endregion
+
+        #region RemoveLastView
+        /// <summary>
+        /// Prüft ob auf dem Stack 2 ViewModels drauf sind, wenn ja wird die unterste gelöscht.
+        /// </summary>
+        public void RemoveLastView()
+        {
+            if (XamarinFormsNav.NavigationStack.Count() < 2)
+            {
+                return;
+            }
+
+            var lastView = XamarinFormsNav.NavigationStack[XamarinFormsNav.NavigationStack.Count - 2];
+            XamarinFormsNav.RemovePage(lastView);
+        }
+        #endregion
+
+        #region ClearBackStack
+        /// <summary>
+        /// Prüft ob sich auf dem Stack mehr als 1 ViewModel Befindet, wenn ja werden alle
+        /// darunterliegenden ViewModels gelöscht
+        /// </summary>
+        public void ClearBackStack()
+        {
+            if (XamarinFormsNav.NavigationStack.Count < 2)
+            {
+                return;
+            }
+
+            for (int i = 0; i < XamarinFormsNav.NavigationStack.Count - 1; i++)
+            {
+                XamarinFormsNav.RemovePage(XamarinFormsNav.NavigationStack[i]);
+            }
+        }
+        #endregion
+
     }
 }
