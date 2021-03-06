@@ -7,7 +7,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using TripLog.ViewModels;
+using TripLog.Services;
 
+[assembly: Dependency(typeof(XamarinFormsNavService))]
 namespace TripLog.Services
 {
     public class XamarinFormsNavService : INavService
@@ -118,5 +120,46 @@ namespace TripLog.Services
         }
         #endregion
 
+        #region NavigateToUri
+        /// <summary>
+        /// Navigiert zur übergebenen URI
+        /// </summary>
+        /// <param name="uri"></param>
+        public void NavigateToUri(Uri uri)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentException("Invalid URI");
+            }
+
+            Device.OpenUri(uri);
+        }
+        #endregion
+
+        #region NavigateToView
+        /// <summary>
+        /// Prüft in der <see cref="_map"/> ob sich eine definierte View drin befindet.
+        /// Über die Reflection Methode wird der Konstruktor der <paramref name="viewModelType"/> instanziiert
+        /// Über <see cref="XamarinFormsNav"/> wird zur Seite navigiert.
+        /// </summary>
+        /// <param name="viewModelType"></param>
+        /// <returns></returns>
+        async Task NavigateToView(Type viewModelType)
+        {
+            if (!_map.TryGetValue(viewModelType, out Type viewType))
+            {
+                throw new ArgumentException("No view found in view mapping for " + viewModelType.FullName + ".");
+            }
+
+            // Use reflection to geht the View´s constructor and create an instance of the View
+            var constructor = viewType.GetTypeInfo().DeclaredConstructors.FirstOrDefault(dc => !dc.GetParameters().Any());
+
+            var view = constructor.Invoke(null) as Page;
+
+            await XamarinFormsNav.PushAsync(view, true);
+        }
+        #endregion
+
+        void OnCanGoBackChanged() => CanGoBackChanged?.Invoke(this, new PropertyChangedEventArgs("CanGoBack"));
     }
 }
