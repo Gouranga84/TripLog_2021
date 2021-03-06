@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
+
+using TripLog.Services;
 
 namespace TripLog.ViewModels
 {
@@ -15,7 +16,7 @@ namespace TripLog.ViewModels
         #endregion
 
         #region Konstruktor
-        public BaseValidationViewModel() { }
+        public BaseValidationViewModel(INavService navService) : base(navService) { }
         #endregion
 
         #region Ereigniss ErrorsChanged

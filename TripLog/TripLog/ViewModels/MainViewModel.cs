@@ -1,13 +1,26 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Xamarin.Forms;
+
 using TripLog.Models;
+using TripLog.Services;
+
 
 namespace TripLog.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        #region _ligEntries
+        /// <summary>
+        /// private Eigenschaft _logEntries
+        /// </summary>
         ObservableCollection<TripLogEntry> _logEntries;
+        #endregion
 
+        #region LogEntries
+        /// <summary>
+        /// Beschreibt die Eigenschaften der LogEntries
+        /// </summary>
         public ObservableCollection<TripLogEntry> LogEntries
         {
             get => _logEntries;
@@ -17,11 +30,14 @@ namespace TripLog.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
-        public MainViewModel()
+        #region Konstruktor
+        public MainViewModel(INavService navService) : base(navService)
         {
             LogEntries = new ObservableCollection<TripLogEntry>();
         }
+        #endregion
 
         public override void Init()
         {
@@ -60,5 +76,16 @@ namespace TripLog.ViewModels
                 Longitude = -122.4798
             });
         }
+
+        #region Command
+        /// <summary>
+        /// ViewCommand Kommando zum navigieren zur Detailansicht der App
+        /// </summary>
+        public Command<TripLogEntry> ViewCommand =>
+            new Command<TripLogEntry>(async entry =>
+            await NavService.NavigateTo<DetailViewModel, TripLogEntry>(entry));
+
+        public Command NewCommand => new Command(async () =>  await NavService.NavigateTo<NewEntryViewModel>());
+        #endregion
     }
 }
