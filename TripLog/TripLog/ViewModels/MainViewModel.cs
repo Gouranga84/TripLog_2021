@@ -10,7 +10,7 @@ namespace TripLog.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        #region _ligEntries
+        #region _logEntries
         /// <summary>
         /// private Eigenschaft _logEntries
         /// </summary>
